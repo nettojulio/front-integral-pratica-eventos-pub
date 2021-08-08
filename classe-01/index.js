@@ -1,76 +1,121 @@
-const esconder = document.querySelector('aside');
-const main = document.querySelector('.main');
-const menu = document.querySelector('#menu-main');
+const mainMenu = document.querySelector('#menu-main');
+const hideMenu = document.querySelector('.side-menu');
 const menuTools = document.querySelector('.menu-tools');
-const post = document.querySelector('.pics');
-const like = document.querySelector('.like-on');
 
-const postAll = document.querySelectorAll('.pics');
-const likeAll = document.querySelectorAll('.like-on');
+const galleryPics = document.querySelectorAll('.pics');
 
-
-const imagensGaleria = document.querySelectorAll('.pics');
-const imagemModal = document.querySelector('.modal-principal-img');
 const modal = document.querySelector('.modal');
-const fecharModal = document.querySelector('.close-modal');
-const voltarModal = document.querySelector('.rewind');
-const avancarModal = document.querySelector('.forward');
+const modalPic = document.querySelector('.modal-principal-img');
+const modalLike = document.querySelector('.like-on-modal');
+const closeModal = document.querySelector('.close-modal');
+const rewind = document.querySelector('.rewind');
+const forward = document.querySelector('.forward');
 
-const likeModal = document.querySelectorAll('.like-on-modal');
+let currentImage = 0;
+let liked = [];
 
-const rewindModal = document.querySelector('.rewind');
-const forwardModal = document.querySelector('.forward');
+// OK
 
-menu.addEventListener('click', function () {
-    esconder.classList.toggle('hidden-sidebar');
-    menuTools.src = esconder.classList.contains('hidden-sidebar') ? './assets/closed-menu.svg' : './assets/open-menu.svg';
-})
+mainMenu.addEventListener('click', function () {
+    hideMenu.classList.toggle('hidden-sidebar');
+    menuTools.src = hideMenu.classList.contains('hidden-sidebar') ? './assets/closed-menu.svg' : './assets/open-menu.svg';
+});
 
+galleryPics.forEach(imagem => {
+    imagem.addEventListener('click', (event) => {
+        modal.classList.remove('hidden');
+        currentImage = Number(event.target.dataset.index);
 
-function abrirModal(src) {
-    modal.style.display = 'flex';
-    imagemModal.src = src;
-}
-
-imagensGaleria.forEach(function (imagem) {
-    imagem.addEventListener('click', function (event) {
-        if (imagensGaleria[0].src === event.target.src) {
-            voltarModal.style.display = 'none';
-        }
-        if (imagensGaleria[imagensGaleria.length - 1].src === event.target.src) {
-            avancarModal.style.display = 'none';
+        if (liked.includes(currentImage)) {
+            modalLike.classList.remove('hidden');
+        } else {
+            modalLike.classList.add('hidden');
         }
         abrirModal(event.target.src);
+        updateModalButtons();
     });
-});
 
-fecharModal.addEventListener('click', function () {
-    modal.style.display = 'none';
-    voltarModal.style.display = '';
-    avancarModal.style.display = '';
-})
-
-imagemModal.addEventListener('dblclick', function () {
-    let imagemParametro = '';
-
-    for (const imagem of imagensGaleria) {
-        if (imagem.src === imagemModal.src) {
-            imagemParametro = imagem.src;
-        }
+    const itemLike = imagem.previousElementSibling;
+    if (liked.includes(imagem.dataset.index)) {
+        itemLike.classList.remove('hidden');
+    } else {
+        itemLike.classList.add('hidden');
     }
+});
 
-    console.log(imagemParametro);
+modalPic.addEventListener('click', (event) => {
+    event.stopPropagation();
+});
 
-    likeModal[0].classList.toggle('hidden');
-
-    // console.log(likeModal[0].classList.toggle('hidden'))
+closeModal.addEventListener('click', function () {
+    modal.classList.add('hidden');
 })
 
-rewindModal.addEventListener('click', function () {
-    
+function abrirModal(src) {
+    modalPic.src = src;
+}
+
+modalPic.addEventListener('dblclick', () => {
+
+    const itemLike = galleryPics[currentImage].previousElementSibling;
+
+    if (liked.includes(currentImage)) {
+        liked = liked.filter(like => like !== currentImage);
+        itemLike.classList.add('hidden');
+        modalLike.classList.add('hidden');
+    } else {
+        liked.push(currentImage);
+        itemLike.classList.remove('hidden');
+        modalLike.classList.remove('hidden');
+    }
 });
 
-forwardModal.addEventListener('click', function () {
+// EDITAR
 
+rewind.addEventListener('click', (event) => {
+    event.stopPropagation();
+
+    currentImage--;
+    const image = galleryPics[currentImage];
+    abrirModal(image.src);
+    updateModalButtons();
+    updateModalLike();
 });
 
+forward.addEventListener('click', (event) => {
+    event.stopPropagation();
+
+    currentImage++;
+
+    const image = galleryPics[currentImage];
+    abrirModal(image.src);
+    updateModalButtons();
+    updateModalLike();
+});
+
+function updateModalButtons() {
+    rewind.classList.remove('hidden');
+    forward.classList.remove('hidden');
+    if (currentImage === 0) {
+        rewind.classList.add('hidden');
+    }
+    if (currentImage === 9) {
+        forward.classList.add('hidden');
+    }
+}
+
+function updateModalLike() {
+    if (liked.includes(currentImage)) {
+        modalLike.classList.remove('hidden');
+    } else {
+        modalLike.classList.add('hidden');
+    }
+}
+
+modal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+});
+
+closeModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+});
