@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto";
+  /* outline: 1px black dotted; */
+}
+
+body {
+  min-height: 100vh;
+}
+
+.side-menu {
+  background-color: #313131;
+  
+  padding: 20px;
+  gap: 40px;
+  
+  bottom: 0;
+  top: 0;
+  
+  z-index: 1;
+}
+
+.side-button {
+  all: unset;
+}
+
+.gallery {
+  gap: 20px;
+}
+
+.main {
+  margin: 0 0 0 64px;
+  
+  flex-grow: 1;
+}
+
+.hidden-sidebar p {
+  display: none;
+}
+
+.side-button p {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: #888888;
+  margin-left: 27px;
+  padding-right: 40px;
+}
+
+.menu-tools-selector {
+  margin: 0 5px 0 0;
+}
+
+.menu-tools-selector-selected p {
+  color: #ffffff;
+}
+
+.menu-tools-selector-settings {
+  bottom: 10px;
+}
+
+.title-page {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 42px;
+  margin: 122px auto 52px;
+}
+
+.pics-info {
+  font-size: 20px;
+  line-height: 23px;
+  margin: 18px 0 0 0;
+}
+
+.pics-info p:nth-child(2) {
+  color: #5c5c5c;
+}
+
+.like-on {
+  right: 15px;
+  top: 15px;
+  z-index: 2;
+}
+
+.like-on-modal {
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.6);
+
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  gap: 10px;
+  
+  z-index: 3;
+}
+
+.close-modal {
+  top: 20px;
+  right: 20px;
+}
+
+.liked {
+  display: unset;
+}
